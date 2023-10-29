@@ -6,8 +6,9 @@ import { CartContext } from '../../../context/CartProvider'
 import Proptypes from 'prop-types'
 import { useContext } from 'react'
 
-const Header = ({ setShowSearch }) => {
+const Header = ({ setIsSearchShow }) => {
 	const { cartItems } = useContext(CartContext)
+	const user = localStorage.getItem('user')
 	const { pathname } = useLocation()
 	console.log(location)
 	return (
@@ -184,18 +185,33 @@ const Header = ({ setShowSearch }) => {
 								<Link to={'/auth'} className={`menu-link ${pathname === '/contact' && 'active'}`}>
 									<i className="bi bi-person" />
 								</Link>
-								<button className="search-button" onClick={() => setShowSearch(true)}>
+								<button className="search-button" onClick={() => setIsSearchShow(true)}>
 									<i className="bi bi-search" />
 								</button>
-								<a href="#">
+								{/* <a href="#">
 									<i className="bi bi-heart" />
-								</a>
+								</a> */}
 								<div className="header-cart">
-									<Link to={'/cart'} className={`menu-link ${pathname === '/cart' && 'active'}`}>
-										<i className="bi bi-bag" />
+									<Link to={'/cart'} className="header-cart-link">
+										<i className="bi bi-bag"></i>
 										<span className="header-cart-count">{cartItems.length}</span>
 									</Link>
 								</div>
+								{user && (
+									<button
+										className="search-button"
+										onClick={() => {
+											if (window.confirm('Çıkış yapmak istediğinize emin misiniz?')) {
+												{
+													localStorage.removeItem('user')
+													window.location.href = '/'
+												}
+											}
+										}}
+									>
+										<i className="bi bi-box-arrow-right"></i>
+									</button>
+								)}
 							</div>
 						</div>
 					</div>
@@ -204,9 +220,7 @@ const Header = ({ setShowSearch }) => {
 		</header>
 	)
 }
-
 export default Header
-
 Header.propTypes = {
-	setShowSearch: Proptypes.func
+	setIsSearchShow: Proptypes.func
 }

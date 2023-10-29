@@ -2,6 +2,7 @@ import './App.css'
 
 import { Route, Routes } from 'react-router-dom'
 
+import AdminUserPage from './pages/admin/AdminUserPage'
 import AuthPage from './pages/AuthPage'
 import BlogPage from './pages/BlogPage'
 import CartPage from './pages/CartPage'
@@ -21,6 +22,7 @@ function App() {
 			<Route path="/auth" element={<AuthPage />} />
 			<Route path="/products/:id" element={<ProductDetailsPage />} />
 			<Route path="/blog/:id" element={<BlogPage />} />
+			<Route path="/admin/users" element={<AdminUserPage />} />
 		</Routes>
 	)
 }

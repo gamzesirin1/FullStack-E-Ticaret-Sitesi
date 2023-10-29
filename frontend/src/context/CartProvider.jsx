@@ -13,8 +13,7 @@ const CartProvider = ({ children }) => {
 		localStorage.setItem('cartItems', JSON.stringify(cartItems))
 	}, [cartItems])
 
-	const addToCart = (cartItem) => {
-		// setCartItems([...cartItems, cartItem]); 1. yol
+	const addToCard = (cartItem) => {
 		setCartItems((prevCart) => [
 			...prevCart,
 			{
@@ -37,7 +36,7 @@ const CartProvider = ({ children }) => {
 			value={{
 				cartItems,
 				setCartItems,
-				addToCart,
+				addToCard,
 				removeFromCart
 			}}
 		>
