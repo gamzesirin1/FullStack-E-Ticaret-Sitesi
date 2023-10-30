@@ -1,10 +1,45 @@
 import { Button, Popconfirm, Table } from 'antd'
-
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const AdminUserPage = () => {
 	const [dataSource, setDataSource] = useState([])
 	const [loading, setLoading] = useState(false)
+
+	const fetchData = async () => {
+		setLoading(true)
+		const response = await fetch('http://localhost:5000/api/users', {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+
+				Authorization: `Bearer ${localStorage.getItem('token')}`
+			}
+		})
+		const data = await response.json()
+		setDataSource(data)
+		setLoading(false)
+	}
+
+	useEffect(() => {
+		fetchData()
+	}, [])
+
+	const handleDelete = async (email) => {
+		try {
+			const response = await fetch(`http://localhost:5000/api/users/${email}`, {
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${localStorage.getItem('token')}`
+				}
+			})
+			if (response.ok) {
+				fetchData()
+			}
+		} catch (error) {
+			console.log(error)
+		}
+	}
 
 	const columns = [
 		{
@@ -48,7 +83,7 @@ const AdminUserPage = () => {
 					description="Kullanıcıyı silmek istediğinizden emin misiniz?"
 					okText="Yes"
 					cancelText="No"
-					onConfirm={() => deleteUser(record.email)}
+					onConfirm={() => handleDelete(record.email)}
 				>
 					<Button type="primary" danger>
 						Delete
@@ -58,6 +93,10 @@ const AdminUserPage = () => {
 		}
 	]
 
-	return <Table dataSource={dataSource} columns={columns} rowKey={(record) => record._id} loading={loading} />
+	return (
+		<>
+			<Table dataSource={dataSource} columns={columns} rowKey={(record) => record._id} loading={loading} />
+		</>
+	)
 }
 export default AdminUserPage

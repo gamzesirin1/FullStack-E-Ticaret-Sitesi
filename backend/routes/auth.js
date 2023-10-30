@@ -36,6 +36,7 @@ router.post("/register", async (req, res, next) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error });
+    console.log("err",error)
   }
 });
 
@@ -54,11 +55,13 @@ router.post("/login", async (req, res, next) => {
 
     if (!checkPassword) {
       return res.status(400).json({ message: "Hatalı şifre." });
+      
     }
 
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ message: error });
+    console.log("err",error)
   }
 });
 

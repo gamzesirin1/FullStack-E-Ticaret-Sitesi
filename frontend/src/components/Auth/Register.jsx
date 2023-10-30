@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 const Register = () => {
 	const navigate = useNavigate()
-	const apiUrl = import.meta.env.VITE_API_URL
+	const apiUrl = import.meta.env.VITE_API_BASE_URL
 	const [formData, setFormData] = useState({
 		username: '',
 		email: '',

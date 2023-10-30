@@ -8,14 +8,16 @@ const Login = () => {
 		password: ''
 	})
 	const navigate = useNavigate()
-	const apiUrl = import.meta.env.VITE_API_URL
+	const apiUrl = import.meta.env.VITE_API_BASE_URL
+
 	const handleInputChange = (e) => {
+		console.log('target:', e.target)
 		const { name, value } = e.target
 		setFormData({ ...formData, [name]: value })
 	}
+
 	const handleLogin = async (e) => {
 		e.preventDefault()
-
 		try {
 			const response = await fetch(`${apiUrl}/api/auth/login`, {
 				method: 'POST',
@@ -27,20 +29,18 @@ const Login = () => {
 
 			if (response.ok) {
 				const data = await response.json()
-
 				localStorage.setItem('user', JSON.stringify(data))
-				message.success('giriş başarılı')
+				message.success('Giriş başarılı.')
 				if (data.role === 'admin') {
 					window.location.href = '/admin'
 				} else {
 					navigate('/')
 				}
 			} else {
-				message.error('giriş başarısız')
+				message.error('Giriş başarısız.')
 			}
-			console.log(response)
 		} catch (error) {
-			console.log('giriş hatası: ', error)
+			console.log('Giriş hatası:', error)
 		}
 	}
 	return (
@@ -60,7 +60,7 @@ const Login = () => {
 						<span>
 							Password <span className="required">*</span>
 						</span>
-						<input type="password" name="password" />
+						<input type="password" name="password" onChange={handleInputChange} />
 					</label>
 				</div>
 				<p className="remember">
