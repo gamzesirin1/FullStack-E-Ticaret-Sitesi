@@ -2,7 +2,7 @@ import { createContext, useEffect, useState } from 'react'
 
 import PropTypes from 'prop-types'
 
-export const CartContext = createContext()
+const CartContext = createContext()
 
 const CartProvider = ({ children }) => {
 	const [cartItems, setCartItems] = useState(
@@ -12,6 +12,8 @@ const CartProvider = ({ children }) => {
 	useEffect(() => {
 		localStorage.setItem('cartItems', JSON.stringify(cartItems))
 	}, [cartItems])
+
+	console.log('cart items 1:', cartItems)
 
 	const addToCard = (cartItem) => {
 		setCartItems((prevCart) => [
@@ -23,29 +25,20 @@ const CartProvider = ({ children }) => {
 		])
 	}
 
-	const removeFromCart = (itemId) => {
+	const removeFromCard = (itemId) => {
 		const filteredCartItems = cartItems.filter((cartItem) => {
-			return cartItem._id !== itemId
+			return cartItem.id !== itemId
 		})
 
 		setCartItems(filteredCartItems)
 	}
 
-	return (
-		<CartContext.Provider
-			value={{
-				cartItems,
-				setCartItems,
-				addToCard,
-				removeFromCart
-			}}
-		>
-			{children}
-		</CartContext.Provider>
-	)
+	return <CartContext.Provider value={{ addToCard, removeFromCard, cartItems }}>{children}</CartContext.Provider>
 }
 
 export default CartProvider
+
+export { CartContext }
 
 CartProvider.propTypes = {
 	children: PropTypes.node

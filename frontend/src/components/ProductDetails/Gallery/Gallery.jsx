@@ -61,7 +61,7 @@ const Gallery = () => {
 	return (
 		<div className="product-gallery">
 			<div className="single-image-wrapper">
-				<img src={`/${activeImg}`} id="single-image" alt="" />
+				<img src={`/${activeImg.img}`} id="single-image" alt="" />
 			</div>
 			<div className="product-thumb">
 				<div className="glide__track" data-glide-el="track">

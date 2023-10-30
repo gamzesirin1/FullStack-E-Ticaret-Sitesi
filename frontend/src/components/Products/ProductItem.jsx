@@ -9,6 +9,7 @@ const ProductItem = ({ productItem }) => {
 	const { addToCard, cartItems } = useContext(CartContext)
 
 	const filteredCart = cartItems.find((cartItem) => cartItem.id === productItem.id)
+
 	return (
 		<div className="product-item glide__slide glide__slide--active">
 			<div className="product-image">
