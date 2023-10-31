@@ -66,7 +66,7 @@ const ProductItem = ({ productItem }) => {
 					<button>
 						<i className="bi bi-heart-fill"></i>
 					</button>
-					<Link to={`product/${productItem._id}`} className="product-link">
+					<Link to={`products/${productItem._id}`} className="product-link">
 						<i className="bi bi-eye-fill"></i>
 					</Link>
 					<a href="#">

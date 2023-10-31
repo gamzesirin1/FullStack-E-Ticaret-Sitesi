@@ -3,48 +3,45 @@ const router = express.Router();
 
 const Product = require("../models/Product");
 
-// post a product
+// Yeni bir ürün oluşturma (Create)
 router.post("/", async (req, res) => {
   try {
-    const product = new Product(req.body);
-
-    const savedProduct = await product.save();
-
-    res.status(200).json(savedProduct);
-  } catch (err) {
-    res.status(500).json(err);
+    const newProduct = new Product(req.body);
+    await newProduct.save();
+    res.status(201).json(newProduct);
+  } catch (error) {
+    console.log(error);
   }
 });
-
-// get all products
+// Tüm ürünleri getirme (Read - All)
 router.get("/", async (req, res) => {
   try {
     const products = await Product.find();
 
-    if (!products) {
-      res.status(404).json({ message: "Ürünler bulunamadı." });
-    }
-
     res.status(200).json(products);
-  } catch (err) {
-    res.status(500).json(err);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Server error." });
   }
 });
 
-// get a product
-router.get("/:id", async (req, res) => {
+// Belirli bir ürünü getirme (Read - Single)
+router.get("/:productId", async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
+    const productId = req.params.productId;
+    const product = await Product.findById(productId);
 
     if (!product) {
-      res.status(404).json({ message: "Ürün bulunamadı." });
+      return res.status(404).json({ error: "Product not found." });
     }
 
     res.status(200).json(product);
-  } catch (err) {
-    res.status(500).json(err);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Server error." });
   }
-});
+}
+)
 
 // Ürün güncelleme (Update)
 router.put("/:productId", async (req, res) => {
