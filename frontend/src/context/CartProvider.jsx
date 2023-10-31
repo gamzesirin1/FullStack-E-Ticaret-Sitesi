@@ -15,7 +15,8 @@ const CartProvider = ({ children }) => {
 
 	console.log('cart items 1:', cartItems)
 
-	const addToCard = (cartItem) => {
+	const addToCart = (cartItem) => {
+		// setCartItems([...cartItems, cartItem]); 1. yol
 		setCartItems((prevCart) => [
 			...prevCart,
 			{
@@ -24,7 +25,6 @@ const CartProvider = ({ children }) => {
 			}
 		])
 	}
-
 	const removeFromCard = (itemId) => {
 		const filteredCartItems = cartItems.filter((cartItem) => {
 			return cartItem.id !== itemId
@@ -33,7 +33,7 @@ const CartProvider = ({ children }) => {
 		setCartItems(filteredCartItems)
 	}
 
-	return <CartContext.Provider value={{ addToCard, removeFromCard, cartItems }}>{children}</CartContext.Provider>
+	return <CartContext.Provider value={{ addToCart, removeFromCard, cartItems }}>{children}</CartContext.Provider>
 }
 
 export default CartProvider

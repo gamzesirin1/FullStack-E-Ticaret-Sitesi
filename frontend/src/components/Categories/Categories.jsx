@@ -36,7 +36,7 @@ const Categories = () => {
 				<ul className="category-list">
 					<CategoryItem />
 					{categories.map((category) => (
-						<CategoryItem key={category.id} category={category} />
+						<CategoryItem key={category._id} category={category} />
 					))}
 				</ul>
 			</div>
