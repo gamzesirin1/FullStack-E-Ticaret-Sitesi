@@ -10,7 +10,7 @@ const Header = ({ setIsSearchShow }) => {
 	const { cartItems } = useContext(CartContext)
 	const user = localStorage.getItem('user')
 	const { pathname } = useLocation()
-	console.log(location)
+
 	return (
 		<header>
 			<div className="global-notification">
@@ -25,10 +25,10 @@ const Header = ({ setIsSearchShow }) => {
 				<div className="container">
 					<div className="header-wrapper">
 						<div className="header-mobile">
-							<i className="bi bi-list" id="btn-menu" />
+							<i className="bi bi-list" id="btn-menu"></i>
 						</div>
 						<div className="header-left">
-							<Link to={'/'} className={`menu-link ${pathname === '/' && 'active'}`}>
+							<Link to={'/'} className="logo">
 								LOGO
 							</Link>
 						</div>
@@ -38,7 +38,7 @@ const Header = ({ setIsSearchShow }) => {
 									<li className="menu-list-item">
 										<Link to={'/'} className={`menu-link ${pathname === '/' && 'active'}`}>
 											Home
-											<i className="bi bi-chevron-down" />
+											<i className="bi bi-chevron-down"></i>
 										</Link>
 										<div className="menu-dropdown-wrapper">
 											<ul className="menu-dropdown-content">
@@ -73,9 +73,9 @@ const Header = ({ setIsSearchShow }) => {
 										</div>
 									</li>
 									<li className="menu-list-item megamenu-wrapper">
-										<Link to={'/shop'} href="shop.html" className={`menu-link ${pathname === '/shop' && 'active'}`}>
+										<Link to={'/shop'} className={`menu-link ${pathname === '/shop' && 'active'}`}>
 											Shop
-											<i className="bi bi-chevron-down" />
+											<i className="bi bi-chevron-down"></i>
 										</Link>
 										<div className="menu-dropdown-wrapper">
 											<div className="menu-dropdown-megamenu">
@@ -155,7 +155,7 @@ const Header = ({ setIsSearchShow }) => {
 												</div>
 												<div className="megamenu-single">
 													<a href="#">
-														<img src="img/mega-menu.jpg" alt />
+														<img src="/img/mega-menu.jpg" alt="" />
 													</a>
 													<h3 className="megamenu-single-title">JOIN THE LAYERING GANG</h3>
 													<h4 className="megamenu-single-subtitle">Suspendisse faucibus nunc et pellentesque</h4>
@@ -178,19 +178,19 @@ const Header = ({ setIsSearchShow }) => {
 									</li>
 								</ul>
 							</nav>
-							<i className="bi-x-circle" id="close-sidebar" />
+							<i className="bi-x-circle" id="close-sidebar"></i>
 						</div>
 						<div className="header-right">
 							<div className="header-right-links">
-								<Link to={'/auth'} className={`menu-link ${pathname === '/contact' && 'active'}`}>
-									<i className="bi bi-person" />
+								<Link to={'/auth'} className="header-account">
+									<i className="bi bi-person"></i>
 								</Link>
 								<button className="search-button" onClick={() => setIsSearchShow(true)}>
-									<i className="bi bi-search" />
+									<i className="bi bi-search"></i>
 								</button>
 								{/* <a href="#">
-									<i className="bi bi-heart" />
-								</a> */}
+                  <i className="bi bi-heart"></i>
+                </a> */}
 								<div className="header-cart">
 									<Link to={'/cart'} className="header-cart-link">
 										<i className="bi bi-bag"></i>
@@ -220,7 +220,9 @@ const Header = ({ setIsSearchShow }) => {
 		</header>
 	)
 }
+
 export default Header
+
 Header.propTypes = {
 	setIsSearchShow: Proptypes.func
 }

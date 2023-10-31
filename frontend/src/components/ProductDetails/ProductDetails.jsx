@@ -6,7 +6,7 @@ import Info from './Info/Info'
 import PropTypes from 'prop-types'
 import Tabs from './Tabs/Tabs'
 
-const ProductDetails = ({ singleProduct }) => {
+const ProductDetails = ({ singleProduct, setSingleProduct }) => {
 	return (
 		<section className="single-product">
 			<div className="container">
@@ -19,7 +19,7 @@ const ProductDetails = ({ singleProduct }) => {
 							<Info singleProduct={singleProduct} />
 						</main>
 					</div>
-					<Tabs singleProduct={singleProduct} />
+					<Tabs singleProduct={singleProduct} setSingleProduct={setSingleProduct} />
 				</div>
 			</div>
 		</section>
@@ -29,5 +29,6 @@ const ProductDetails = ({ singleProduct }) => {
 export default ProductDetails
 
 ProductDetails.propTypes = {
-	singleProduct: PropTypes.object
+	singleProduct: PropTypes.object,
+	setSingleProduct: PropTypes.func
 }
