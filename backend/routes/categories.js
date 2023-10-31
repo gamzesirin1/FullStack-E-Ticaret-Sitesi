@@ -1,83 +1,79 @@
 const express = require("express");
 const router = express.Router();
-const Category = require("../models/Category");
+const Category = require("../models/Category")
 
-// created category
 router.post("/", async (req, res) => {
   try {
     const { name, img } = req.body;
-
-    const category = new Category({
-      name,
-      img,
-    });
-
-    await category.save();
-    res.status(201).json(category);
+    const newCategory = new Category({ name, img });
+    await newCategory.save();
+    res.status(201).json(newCategory);
   } catch (error) {
-    res.status(500).json({ message: error });
+    console.log(error);
   }
 });
-
-// get all categories
+// Tüm kategorileri getirme (Read - All)
 router.get("/", async (req, res) => {
   try {
     const categories = await Category.find();
     res.status(200).json(categories);
   } catch (error) {
-    res.status(500).json({ message: error });
+    console.log(error);
+    res.status(500).json({ error: "Server error." });
+  }
+});
+// Belirli bir kategoriyi getirme (Read - Single)
+router.get("/:categoryId", async (req, res) => {
+  try {
+    const categoryId = req.params.categoryId;
+    try {
+      const category = await Category.findById(categoryId);
+      res.status(200).json(category);
+    } catch (error) {
+      console.log(error);
+      res.status(404).json({ error: "Category not found." });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Server error." });
+  }
+});
+// Kategori güncelleme (Update)
+router.put("/:categoryId", async (req, res) => {
+  try {
+    const categoryId = req.params.categoryId;
+    const updates = req.body;
+    const existingCategory = await Category.findById(categoryId);
+    if (!existingCategory) {
+      return res.status(404).json({ error: "Category not found." });
+    }
+    const updatedCategory = await Category.findByIdAndUpdate(
+      categoryId,
+      updates,
+      { new: true }
+    );
+    res.status(200).json(updatedCategory);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Server error." });
   }
 });
 
-// get category by id
-router.get("/:id", async (req, res) => {
+// Kategori silme (Delete)
+router.delete("/:categoryId", async (req, res) => {
   try {
-    const category = await Category.findById(req.params.id);
+    const categoryId = req.params.categoryId;
 
-    if (!category) {
-      res.status(404).json({ message: "Kategori bulunamadı." });
+    const deletedCategory = await Category.findByIdAndRemove(categoryId);
+
+    if (!deletedCategory) {
+      return res.status(404).json({ error: "Category not found." });
     }
 
-    res.status(200).json(category);
+    res.status(200).json(deletedCategory);
   } catch (error) {
-    res.status(500).json({ message: error });
-  }
-});
-
-// update category by id
-router.patch("/:id", async (req, res) => {
-  try {
-    const { name, img } = req.body;
-
-    const category = await Category.findById(req.params.id);
-
-    if (!category) {
-      res.status(404).json({ message: "Kategori bulunamadı." });
-    }
-
-    category.name = name;
-    category.img = img;
-
-    await category.save();
-
-    res.status(200).json(category);
-  } catch (error) {
-    res.status(500).json({ message: error });
-  }
-});
-
-// delete category
-router.delete("/:id", async (req, res) => {
-  try {
-    const category = await Category.findByIdAndRemove(req.params.id);
-
-    if (!category) {
-      res.status(404).json({ message: "Kategori bulunamadı." });
-    }
-
-    res.status(200).json({ message: "Kategori silindi." });
-  } catch (error) {
-    res.status(500).json({ message: error });
+    console.log(error);
+    res.status(500).json({ error: "Server error." });
   }
 });
 

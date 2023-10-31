@@ -1,9 +1,8 @@
 const express = require("express");
 const router = express.Router();
+const Coupon = require("../models/Coupon.js");
 
-const Coupon = require("../models/Coupon");
-
-// post a coupon
+// Yeni bir kupon oluşturma (Create)
 router.post("/", async (req, res) => {
   try {
     const { code } = req.body;
@@ -11,98 +10,106 @@ router.post("/", async (req, res) => {
     const existingCoupon = await Coupon.findOne({ code });
 
     if (existingCoupon) {
-      res.status(404).json({ message: "Bu kupon kodu zaten var." });
+      return res.status(400).json({ error: "This coupon is alread exists." });
     }
 
-    const coupon = new Coupon(req.body);
+    const newCoupon = new Coupon(req.body);
+    await newCoupon.save();
 
-    const savedCoupon = await coupon.save();
-
-    res.status(200).json(savedCoupon);
-  } catch (err) {
-    res.status(500).json(err);
+    res.status(201).json(newCoupon);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Server error." });
   }
 });
 
-// get all coupons
+// Tüm kuponları getirme (Read - All)
 router.get("/", async (req, res) => {
   try {
     const coupons = await Coupon.find();
 
-    if (!coupons) {
-      res.status(404).json({ message: "Kuponlar bulunamadı." });
-    }
-
     res.status(200).json(coupons);
-  } catch (err) {
-    res.status(500).json(err);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Server error." });
   }
 });
 
-// get single coupon
-router.get("/:id", async (req, res) => {
+// Belirli bir kuponu getirme (Read - Single by Coupon ID)
+router.get("/:couponId", async (req, res) => {
   try {
-    const coupon = await Coupon.findById(req.params.id);
+    const couponId = req.params.couponId;
+
+    const coupon = await Coupon.findById(couponId);
 
     if (!coupon) {
-      res.status(404).json({ message: "Kupon bulunamadı." });
+      return res.status(404).json({ error: "Coupon not found." });
     }
 
     res.status(200).json(coupon);
-  } catch (err) {
-    res.status(500).json(err);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Server error." });
   }
 });
 
-// kupon koduna göre kupon getir
-router.get("/code/:code", async (req, res) => {
+// Belirli bir kuponu getirme (Read - Single by Coupon Code)
+router.get("/code/:couponCode", async (req, res) => {
   try {
-    const coupon = await Coupon.findOne({ code: req.params.code });
+    const couponCode = req.params.couponCode;
+
+    const coupon = await Coupon.findOne({ code: couponCode });
 
     if (!coupon) {
-      res.status(404).json({ message: "Kupon bulunamadı." });
+      return res.status(404).json({ error: "Coupon not found." });
     }
-
-    res.status(200).json(coupon);
-  } catch (err) {
-    res.status(500).json(err);
+    const { discountPercent } = coupon;
+    res.status(200).json({ discountPercent });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Server error." });
   }
 });
 
-// update a coupon
-router.patch("/:id", async (req, res) => {
+// Kupon güncelleme (Update)
+router.put("/:couponId", async (req, res) => {
   try {
-    const coupon = await Coupon.findById(req.params.id);
+    const couponId = req.params.couponId;
+    const updates = req.body;
 
-    if (!coupon) {
-      res.status(404).json({ message: "Kupon bulunamadı." });
+    const existingCoupon = await Coupon.findById(couponId);
+
+    if (!existingCoupon) {
+      return res.status(404).json({ error: "Coupon not found." });
     }
 
-    const updatedCoupon = await Coupon.findByIdAndUpdate(categoryId, updates, {
+    const updatedCoupon = await Coupon.findByIdAndUpdate(couponId, updates, {
       new: true,
     });
 
     res.status(200).json(updatedCoupon);
   } catch (error) {
-    res.status(500).json(err);
+    console.log(error);
+    res.status(500).json({ error: "Server error." });
   }
 });
 
-// delete a coupon
-router.delete("/:id", async (req, res) => {
-  try {
-    const coupon = await Coupon.findById(req.params.id);
-
-    if (!coupon) {
-      res.status(404).json({ message: "Kupon bulunamadı." });
+// Kupon silme (Delete)
+router.delete("/:couponId", async (req, res) => {
+    try {
+      const couponId = req.params.couponId;
+  
+      const deletedCoupon = await Coupon.findByIdAndRemove(couponId);
+  
+      if (!deletedCoupon) {
+        return res.status(404).json({ error: "Coupon not found." });
+      }
+  
+      res.status(200).json(deletedCoupon);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: "Server error." });
     }
-
-    await coupon.delete();
-
-    res.status(200).json({ message: "Kupon silindi." });
-  } catch (error) {
-    res.status(500).json(err);
-  }
-});
+  });
 
 module.exports = router;
