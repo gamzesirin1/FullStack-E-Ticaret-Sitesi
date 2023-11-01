@@ -12,6 +12,7 @@ import CouponPage from './pages/admin/coupons/CouponPage'
 import CreateCategoryPage from './pages/admin/categories/CreateCategoryPage'
 import CreateCouponPage from './pages/admin/coupons/CreateCouponPage'
 import CreateProductPage from './pages/admin/products/CreateProductPage'
+import DashboardPage from './pages/admin/dashboardPage'
 import HomePage from './pages/HomePage'
 import ProductDetailsPage from './pages/ProductDetailsPage'
 import ProductPage from './pages/admin/products/ProductPage'
@@ -31,6 +32,7 @@ function App() {
 			<Route path="/auth" element={<AuthPage />} />
 			<Route path="/products/:id" element={<ProductDetailsPage />} />
 			<Route path="/blog/:id" element={<BlogPage />} />
+			<Route path="/admin" element={<DashboardPage />} />
 			<Route path="/admin/users" element={<AdminUserPage />} />
 			<Route path="/admin/categories" element={<CategoryPage />} />
 			<Route path="/admin/categories/create" element={<CreateCategoryPage />} />
