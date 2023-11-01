@@ -4,7 +4,6 @@ import {
 	DashboardOutlined,
 	LaptopOutlined,
 	RollbackOutlined,
-	ShoppingCartOutlined,
 	UserOutlined
 } from '@ant-design/icons'
 import { Layout, Menu } from 'antd'
@@ -112,15 +111,6 @@ const AdminLayout = ({ children }) => {
 			path: '/admin/users',
 			onClick: () => {
 				navigate(`/admin/users`)
-			}
-		},
-		{
-			key: '12',
-			icon: <ShoppingCartOutlined />,
-			label: 'Siparişler',
-			path: '/admin/orders',
-			onClick: () => {
-				navigate(`/admin/orders`)
 			}
 		},
 		{
